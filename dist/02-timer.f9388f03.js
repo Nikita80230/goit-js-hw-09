@@ -544,9 +544,10 @@ function onStartClick() {
     calculationStart();
 }
 function calculationStart() {
-    setInterval(()=>{
+    let setIntervalId = setInterval(()=>{
         const restTime = convertMs(chosenDate - Date.now());
         markupChange(restTime);
+        if (restTime.seconds <= 0) clearInterval(setIntervalId);
     }, 1000);
 }
 function convertMs(ms) {
