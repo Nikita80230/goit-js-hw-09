@@ -519,6 +519,7 @@ function onFormSubmit(e) {
         delay: parseInt(refs.delay.value)
     };
     callPromiseCreation(data);
+    refs.form.reset();
 }
 function callPromiseCreation({ amount , step , delay: delay1  }) {
     let calculatedDelay = delay1;
