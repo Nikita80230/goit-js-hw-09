@@ -503,29 +503,48 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"cYUEh":[function(require,module,exports) {
+const body = document.querySelector("body");
+const startBtn = body.querySelector("button[data-start]");
+const stopBtn = body.querySelector("button[data-stop]");
+console.log(startBtn);
+console.log(stopBtn);
+startBtn.addEventListener("click", onStart);
+stopBtn.addEventListener("click", onStop);
+let intervalId;
+function onStart() {
+    intervalId = setInterval(()=>{
+        startBtn.setAttribute("disabled", "disabled");
+        stopBtn.removeAttribute("disabled");
+        body.style.backgroundColor = getRandomHexColor();
+    }, 1000);
+}
+function onStop() {
+    clearInterval(intervalId);
+    startBtn.removeAttribute("disabled");
+    stopBtn.setAttribute("disabled", "disabled");
+}
 function getRandomHexColor() {
     return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
-const isDisabled = true;
-let timeIntervalId = 0;
-const buttonStart = document.querySelector("[data-start]");
-const buttonStop = document.querySelector("[data-stop]");
-buttonStop.disabled = isDisabled;
-buttonStart.addEventListener("click", onStartClick);
-buttonStop.addEventListener("click", onStopClick);
-function changeBodyBackgroundColor() {
-    document.body.style.backgroundColor = getRandomHexColor();
-}
-function onStartClick() {
-    buttonStart.disabled = isDisabled;
-    buttonStop.disabled = !isDisabled;
-    timeIntervalId = setInterval(changeBodyBackgroundColor, 1000);
-}
-function onStopClick() {
-    buttonStart.disabled = !isDisabled;
-    buttonStop.disabled = isDisabled;
-    clearInterval(timeIntervalId);
-}
+} // const isDisabled = true;
+ // let timeIntervalId = 0;
+ // const buttonStart = document.querySelector('[data-start]');
+ // const buttonStop = document.querySelector('[data-stop]');
+ // buttonStop.disabled = isDisabled;
+ // buttonStart.addEventListener('click', onStartClick);
+ // buttonStop.addEventListener('click', onStopClick);
+ // function changeBodyBackgroundColor() {
+ //   document.body.style.backgroundColor = getRandomHexColor();
+ // }
+ // function onStartClick() {
+ //   buttonStart.disabled = isDisabled;
+ //   buttonStop.disabled = !isDisabled;
+ //   timeIntervalId = setInterval(changeBodyBackgroundColor, 1000);
+ // }
+ // function onStopClick() {
+ //   buttonStart.disabled = !isDisabled;
+ //   buttonStop.disabled = isDisabled;
+ //   clearInterval(timeIntervalId);
+ // }
 
 },{}]},["gzrwE","cYUEh"], "cYUEh", "parcelRequire1851")
 
