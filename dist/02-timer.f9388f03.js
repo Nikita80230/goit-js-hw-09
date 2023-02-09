@@ -506,7 +506,67 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _flatpickr = require("flatpickr");
 var _flatpickrDefault = parcelHelpers.interopDefault(_flatpickr);
-var _flatpickrMinCss = require("flatpickr/dist/flatpickr.min.css"); // import { Notify } from 'notiflix/build/notiflix-notify-aio';
+var _flatpickrMinCss = require("flatpickr/dist/flatpickr.min.css");
+const inputEl = document.querySelector(".input__thumb");
+const outputEl = document.querySelector(".output__thumb");
+const btnEl = inputEl.querySelector(".button");
+let chosenDate = Date.now();
+btnEl.addEventListener("click", onStart);
+btnEl.setAttribute("disabled", "disabled");
+const options = {
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+    onClose (selectedDates) {
+        if (selectedDates[0] < Date.now()) alert("Please choose a date in the future");
+        else {
+            btnEl.removeAttribute("disabled");
+            onValidDate(selectedDates[0]);
+        // fp.destroy();
+        }
+    }
+};
+const fp = (0, _flatpickrDefault.default)("#datetime-picker", options);
+function convertMs(ms) {
+    // Number of milliseconds per unit of time
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    // Remaining days
+    const days = Math.floor(ms / day);
+    // Remaining hours
+    const hours = Math.floor(ms % day / hour);
+    // Remaining minutes
+    const minutes = Math.floor(ms % day % hour / minute);
+    // Remaining seconds
+    const seconds = Math.floor(ms % day % hour % minute / second);
+    return {
+        days,
+        hours,
+        minutes,
+        seconds
+    };
+}
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function onValidDate(date) {
+    chosenDate = date;
+}
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function onStart() {
+    const timeToTimerStop = convertMs(chosenDate - Date.now());
+    changeMarkup(timeToTimerStop);
+// // fp.destroy();
+// // validTime = onValidDate();
+// changeMarkup(onValidDate())
+}
+function changeMarkup(time) {
+    outputEl.querySelector("span[data-days]").textContent = time.days;
+    outputEl.querySelector("span[data-hours]").textContent = time.hours;
+    outputEl.querySelector("span[data-minutes]").textContent = time.minutes;
+    outputEl.querySelector("span[data-seconds]").textContent = time.seconds;
+} // import { Notify } from 'notiflix/build/notiflix-notify-aio';
  // const options = {
  //   enableTime: true,
  //   time_24hr: true,
@@ -551,22 +611,6 @@ var _flatpickrMinCss = require("flatpickr/dist/flatpickr.min.css"); // import { 
  //       clearInterval(setIntervalId);
  //     }
  //   }, 1000);
- // }
- // function convertMs(ms) {
- //   // Number of milliseconds per unit of time
- //   const second = 1000;
- //   const minute = second * 60;
- //   const hour = minute * 60;
- //   const day = hour * 24;
- //   // Remaining days
- //   const days = Math.floor(ms / day);
- //   // Remaining hours
- //   const hours = Math.floor((ms % day) / hour);
- //   // Remaining minutes
- //   const minutes = Math.floor(((ms % day) % hour) / minute);
- //   // Remaining seconds
- //   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
- //   return { days, hours, minutes, seconds };
  // }
  // function markupChange({ days, hours, minutes, seconds }) {
  //   refs.days.textContent = addLeadingZero(days);
