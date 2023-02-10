@@ -510,7 +510,11 @@ var _flatpickrMinCss = require("flatpickr/dist/flatpickr.min.css");
 const inputEl = document.querySelector(".input__thumb");
 const outputEl = document.querySelector(".output__thumb");
 const btnEl = inputEl.querySelector(".button");
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 let chosenDate = Date.now();
+let intervalId = null;
+let timeToTimerStop = 0;
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 btnEl.addEventListener("click", onStart);
 btnEl.setAttribute("disabled", "disabled");
 const options = {
@@ -555,17 +559,21 @@ function onValidDate(date) {
 }
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function onStart() {
-    const timeToTimerStop = convertMs(chosenDate - Date.now());
-    changeMarkup(timeToTimerStop);
-// // fp.destroy();
-// // validTime = onValidDate();
-// changeMarkup(onValidDate())
+    intervalId = setInterval(()=>{
+        timeToTimerStop = convertMs(chosenDate - Date.now());
+        changeMarkup(timeToTimerStop);
+        if (timeToTimerStop.seconds <= 0) clearInterval(intervalId);
+    }, 1000);
 }
+function addLeadingZero(str) {
+    return String(str).padStart(2, "0");
+}
+// addLeadingZero()
 function changeMarkup(time) {
-    outputEl.querySelector("span[data-days]").textContent = time.days;
-    outputEl.querySelector("span[data-hours]").textContent = time.hours;
-    outputEl.querySelector("span[data-minutes]").textContent = time.minutes;
-    outputEl.querySelector("span[data-seconds]").textContent = time.seconds;
+    outputEl.querySelector("span[data-days]").textContent = addLeadingZero(time.days);
+    outputEl.querySelector("span[data-hours]").textContent = addLeadingZero(time.hours);
+    outputEl.querySelector("span[data-minutes]").textContent = addLeadingZero(time.minutes);
+    outputEl.querySelector("span[data-seconds]").textContent = addLeadingZero(time.seconds);
 } // import { Notify } from 'notiflix/build/notiflix-notify-aio';
  // const options = {
  //   enableTime: true,
