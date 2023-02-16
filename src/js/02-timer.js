@@ -5,7 +5,7 @@ const inputEl = document.querySelector(".input__thumb");
 const outputEl = document.querySelector(".output__thumb");
 const btnEl = inputEl.querySelector(".button");
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-let chosenDate = Date.now()
+let chosenDate = null;
 let intervalId = null;
 let timeToTimerStop = 0;
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -18,13 +18,14 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose(selectedDates) {
-    if(selectedDates[0] < Date.now()) {
-      alert("Please choose a date in the future")
+  onClose([selectedDates]) {
+    if(selectedDates < Date.now()) {
+      alert("Please choose a date in the future");
+      btnEl.setAttribute("disabled");
     }
      else {
       btnEl.removeAttribute("disabled");
-      onValidDate(selectedDates[0]);
+      chosenDate = selectedDates;
       // fp.destroy();
     }
   },
@@ -50,11 +51,9 @@ function convertMs(ms) {
   
   return { days, hours, minutes, seconds };
 }
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-function onValidDate(date) {
-  chosenDate = date;
-}
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 function onStart() {
   
   intervalId = setInterval(() => {
@@ -69,7 +68,7 @@ function onStart() {
 function addLeadingZero(str) {
   return String(str).padStart(2, "0");
 }
-// addLeadingZero()
+
 
 function changeMarkup(time) {
   outputEl.querySelector("span[data-days]").textContent = addLeadingZero(time.days);

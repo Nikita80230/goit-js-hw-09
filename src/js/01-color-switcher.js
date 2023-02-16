@@ -13,17 +13,25 @@ let intervalId;
 function onStart() {
   
   intervalId = setInterval(() => {
-    startBtn.setAttribute("disabled", "disabled");
-    stopBtn.removeAttribute("disabled");
+    changeAttribute(stopBtn, startBtn);
+    // startBtn.setAttribute("disabled", "disabled");
+    // stopBtn.removeAttribute("disabled");
     body.style.backgroundColor = getRandomHexColor();
   }, 1000);
   
 }
 
+function changeAttribute(btn1, btn2) {
+  btn1.removeAttribute("disabled");
+  btn2.setAttribute("disabled", "disabled");
+}
+
+
 function onStop() {
   clearInterval(intervalId);
-  startBtn.removeAttribute("disabled");
-  stopBtn.setAttribute("disabled", "disabled");
+  // startBtn.removeAttribute("disabled");
+  // stopBtn.setAttribute("disabled", "disabled");
+  changeAttribute(startBtn, stopBtn);
 }
 
 function getRandomHexColor() {
